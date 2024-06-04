@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Traduction des sources à effectuer{% endblock %}
+
+{% block body %}
+    <h1>Traduction</h1>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Attribué par</th>
+                <th scope="col">Langues cibles</th>
+                <th scope="col">Sources à traduire</th>
+                <th scope="col">Traduction</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% set uniqueUsers = {} %}
+            {% for utilisateur in traductionsUser %}
+                {% set userId = utilisateur['user'].id %}
+                {% if userId not in uniqueUsers %}
+                    {% set uniqueUsers = uniqueUsers|merge({(userId): true}) %}
+                    <tr>
+                        <th scope="row">{{ loop.index }}</th>
+                        <td>{{ utilisateur['user'].prenom }} {{ utilisateur['user'].nom }}</td>
+                        <td>
+                            {% set languesCibles = [] %}
+                            {% for source in utilisateur['sources'] %}
+                                {% set projet = source.getProjet() %}
+                                {% set languesCibles = languesCibles|merge(projet.getLanguesCibles()) %}
+                            {% endfor %}
+                            {{ languesCibles|join(', ') }}
+                        </td>
+                        <td>
+                            {% for source in utilisateur['sources'] %}
+                                <div>
+                                    <strong>Clé:</strong> {{ source.cle }}
+                                </div>
+                                <div>
+                                    <strong>Contenu:</strong> {{ source.contenu }}
+                                </div>
+                            {% endfor %}
+                        </td>
+                        <td>
+                            {% for traduction in traductions %}
+                                {{ traduction.getContenuTraduction() }}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            <div class="overlay-container">
+                                <div class="overlay">
+                                    <a class="btn btn-primary" href="{{ path('updatetranslate', {'id': utilisateur['traductionId']}) }}">Modifier</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

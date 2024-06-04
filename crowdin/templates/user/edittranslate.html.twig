@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Modifier la Traduction
+{% endblock %}
+
+{% block body %}
+<section class="vh-100 gradient-custom">
+  <div class="container py-5 h-100">
+    <div class="row justify-content-center align-items-center h-100">
+      <div class="col-12 col-lg-9 col-xl-7">
+        <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
+          <div class="card-body p-4 p-md-5">
+            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Modifier la Traduction</h3>
+            <form method="post">
+           <div class="mb-3">
+    <label for="user" class="form-label">Attribué par</label>
+    <p class="form-control">{{ traduction.attributionUser.nom }} {{ traduction.attributionUser.prenom }}</p>
+</div>
+
+              <div class="mb-3">
+
+                <label for="contenuTraduction" class="form-label">Contenu de la Traduction</label>
+                <textarea class="form-control" id="contenuTraduction" name="contenuTraduction" rows="3">{{ traduction.contenuTraduction }}</textarea>
+              </div>
+              <div class="mb-3">
+                {% for source in sources %}
+                  <label for="source_{{ loop.index }}" class="form-label">Source {{ loop.index }}</label>
+                  <textarea class="form-control" id="source_{{ loop.index }}" name="source_{{ loop.index }}" rows="3" readonly>
+                    Clé: {{ source.cle }}
+                    Contenu: {{ source.contenu }}
+                  </textarea>
+                {% endfor %}
+              </div>
+              <div class="mb-3">
+                <label for="languesCibles" class="form-label">Langues Cibles</label>
+                <ul>
+                  {% for langue in languesCibles %}
+                    <li>{{ langue }}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+              <div class="px-5 py-4">
+                <button type="submit" class="btn btn-success">Modifier</button>
+                <a href="{{ path('getranslate') }}" class="btn btn-danger ms-2">Annuler</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

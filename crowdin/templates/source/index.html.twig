@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Gestion de Source
+{% endblock %}
+
+{% block body %}
+<section class="vh-100 gradient-custom">
+  <div class="container py-5 h-100">
+    <div class="row justify-content-center align-items-center h-100">
+      <div class="col-12 col-lg-9 col-xl-7">
+        <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
+          <div class="card-body p-4 p-md-5">
+              {% if source is defined %}
+                <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Modifier la Source</h3>
+              {% else %}
+                <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Création de Source</h3>
+              {% endif %}
+            {{ form_start(form, {'attr': {'method': form.vars.method}}) }}
+            {{ form_errors(form) }}
+
+            <div class="mb-3">
+              <label for="cle" class="form-label">Clé</label>
+              {{ form_widget(form.cle, {'attr': {'class': 'form-control form-control-lg', 'id': 'cle'}}) }}
+            </div>
+
+            <div class="mb-3">
+              <label for="contenu" class="form-label">Contenu</label>
+              {{ form_widget(form.contenu, {'attr': {'class': 'form-control form-control-lg', 'id': 'contenu'}}) }}
+            </div>
+
+            <div class="mb-3">
+              <label for="projet" class="form-label">Projet</label>
+              {{ form_widget(form.projet, {'attr': {'class': 'form-control form-control-lg', 'id': 'projet'}}) }}
+            </div>
+
+            <div class="px-5 py-4">
+              {% if source is defined %}
+                <button type="submit" class="btn  btn-success">Modifier</button>
+              {% else %}
+                <button type="submit" class="btn btn-primary">Créer</button>
+              {% endif %}
+              <a href="{{ path('getsource') }}" class="btn btn-danger ms-2">Annuler</a>
+            </div>
+
+            {{ form_end(form) }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

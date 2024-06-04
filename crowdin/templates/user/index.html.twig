@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des traducteurs{% endblock %}
+
+{% block body %}
+    <h1>Liste des traducteurs</h1>
+    <script>           
+        setTimeout(() => document.querySelector(".alert").style.display = "none", 2000);
+    </script>
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Prénom</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Email</th>
+                <th scope="col">Langues maîtrisées</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ user.prenom }}</td>
+                    <td>{{ user.nom }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.langue }}</td>
+                    <td>
+                        <div class="overlay-container">
+                            <div class="overlay">
+                                <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal-{{ user.id }}">Attribuer</a>
+                                {% set hasValidTranslation = false %}
+                                {% for trad in traduction %}
+                                    {% if trad.contenuTraduction is not empty %}
+                                        {% set hasValidTranslation = true %}
+                                        <a class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample-{{ user.id }}" aria-expanded="false" aria-controls="collapseWidthExample-{{ user.id }}">Voir traduction</a>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if not hasValidTranslation %}
+                                   
+                                {% endif %}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {% for trad in traduction %}
+                    {% if trad.contenuTraduction is not empty %}
+                        <tr>
+                            <td colspan="6">
+                                <div class="collapse collapse-horizontal" id="collapseWidthExample-{{ user.id }}">
+                                    <div class="card card-body" style="width: 300px;">
+                                        {{ trad.contenuTraduction }}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% for user in users %}
+        <div class="modal fade" id="exampleModal-{{ user.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Attribution des sources pour {{ user.prenom }} {{ user.nom }}</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="POST" action="{{ path('attribute') }}">
+                        <div class="modal-body">
+                            <input type="hidden" name="user_id" value="{{ user.id }}">
+                           <ul>
+ {% for source in sources %}
+    {% set isChecked = user.sources is defined and user.sources.contains(source) %}
+    <li>
+        <input type="checkbox" name="sources[]" value="{{ source.id }}" {% if isChecked %}checked{% endif %}>
+        <label for="source-{{ source.id }}">Clé: {{ source.cle }} <br></label>
+    </li>
+{% endfor %}
+
+</ul>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                            <button type="submit" class="btn btn-primary">Enregistrer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

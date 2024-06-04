@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Affichage des Sources{% endblock %}
+
+{% block body %}
+    <h1>Liste des sources</h1>
+    <a href="{{ path('source') }}" class="btn btn-success mb-3">Ajouter une source</a>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Clee</th>
+                <th scope="col">Contenu</th>
+                <th scope="col">Actions</th> 
+            </tr>
+        </thead>
+        <tbody>
+            {% for source in sources %}
+                <tr>
+                    <td>{{ source.getCle() }}</td>
+                    <td>{{ source.getContenu() }}</td>
+                    <td>
+                        <div class="overlay-container">
+                            <div class="overlay">
+                                <a class="btn btn-primary" href="{{ path('source') }}/{{ source.getId() }}">Modifier</a>
+                                {# <a class="btn btn-info" href="#" data-toggle="collapse" data-target="#demo">Traduire</a> #}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+   
+    <tbody>
+            {% for source in sources %}
+   
+                <tr>
+                    {# <td>{{ source.getCle() }}</td>
+                    <td>{{ source.getContenu() }}</td> #}
+                    {# <td>
+                        <div class="overlay-container">
+                            <div class="overlay">
+                                <a class="btn btn-primary" href="{{ path('source') }}/{{ source.getId() }}">Modifier</a>
+                                <button class="btn btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#source-nis-{{source.getId()}}" aria-expanded="false" aria-controls="source-nis-{{source.getId()}}">
+                                    Traduire
+                                </button>                           
+                        </div>
+                        </div>
+                    </td> #}
+
+                </tr>
+{# <tr class="collapse" id="source-nis-{{ source.getId() }}">
+    <td colspan="3">
+        <div class="card card-body">
+            <h5>Résultats de la traduction :</h5>
+            <ul id="translation-results-{{ source.getId() }}">
+                {% for langue, traduction in traductions[source.getId()] %}
+                    <li>{{ langue }} : 
+                        <ul>
+                            <li>Clé : {{ traduction['titre'] }}</li>
+                            <li>Contenu : {{ traduction['contenu'] }}</li>
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </td>
+</tr> #}
+  {% endfor %}
+    </tbody>
+    </table>
+{% endblock %}

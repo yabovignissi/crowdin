@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion de Projet{% endblock %}
+
+{% block body %}
+<section class="vh-100 gradient-custom">
+  <div class="container py-5 h-100">
+    <div class="row justify-content-center align-items-center h-100">
+      <div class="col-12 col-lg-9 col-xl-7">
+        <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
+          <div class="card-body p-4 p-md-5">
+            {% if projet is defined %}
+              <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Modifier le Projet</h3>
+            {% else %}
+              <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Création de Projet</h3>
+            {% endif %}
+            {{ form_start(form, {'attr': {'method': form.vars.method}}) }}
+            {{ form_errors(form) }}
+
+            <div class="mb-3">
+              <label for="nomProjet" class="form-label">Nom</label>
+              {{ form_widget(form.nomProjet, {'attr': {'class': 'form-control form-control-lg', 'id': 'nomProjet'}}) }}
+            </div>
+
+            <div class="mb-3">
+              <label for="langueOrigine" class="form-label">Langue</label>
+              {{ form_widget(form.langueOrigine, {'attr': {'class': 'form-control form-control-lg', 'id': 'langueOrigine'}}) }}
+            </div>
+
+            <div class="mb-3">
+              <label for="languesCibles" class="form-label">Langues cibles (choisissez jusqu'à trois)</label>
+              {{ form_widget(form.languesCibles, {'attr': {'class': 'form-select form-select-lg', 'id': 'languesCibles', 'multiple': 'multiple', 'size': '3'}}) }}
+            </div>
+
+            <div class="px-5 py-4">
+            {% if projet is defined %}
+              <button type="submit" class="btn btn-success">Modifier</button>
+            {% else %}
+              <button type="submit" class="btn btn-primary">Créer</button>
+            {% endif %}
+            <a href="{{ path('getprojet') }}" class="btn btn-danger ms-2">Annuler</a>
+            </div>
+            {{ form_end(form) }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

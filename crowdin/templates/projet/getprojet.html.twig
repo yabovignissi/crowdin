@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Affichage des Projets{% endblock %}
+
+{% block body %}
+    <h1>Liste des Projets</h1>
+    <a href="{{ path('projet') }}" class="btn btn-success mb-3">Ajouter un Projet</a>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Nom du Projet</th>
+                <th scope="col">Langue</th>
+                <th scope="col">Langues Cibles</th>
+                <th scope="col">Cle</th>
+                <th scope="col">Contenu</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for projet in projets %}
+                <tr>
+                    <td>{{ projet.getNomProjet() }}</td>
+                    <td>{{ projet.getLangueOrigine() }}</td>
+                    <td>
+                        <ul>
+                            {% for langueCible in projet.getLanguesCibles() %}
+                                <li>{{ langueCible }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>
+                        {% if sourcesProjet[projet.getId()] is defined and sourcesProjet[projet.getId()]|length > 0 %}
+                            {% for source in sourcesProjet[projet.getId()] %}
+                                {{ source.getCle() }} <br />
+                            {% endfor %}
+                        {% else %}
+                           aucune Clé
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if sourcesProjet[projet.getId()] is defined and sourcesProjet[projet.getId()]|length > 0 %}
+                            {% for source in sourcesProjet[projet.getId()] %}
+                                {{ source.getContenu() }} <br />
+                            {% endfor %}
+                        {% else %}
+                            Aucune source
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="overlay-container">
+                            <div class="overlay">
+                                <a class="btn btn-primary" href="{{ path('projet') }}/{{projet.getId()}}">Modifier</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
